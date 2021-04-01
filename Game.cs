@@ -17,7 +17,14 @@ namespace SpaceInvadersWinForms
         public Game()
         {
             InitializeComponent();
+            InitializeGame();
             InitializeStarship();
+        }
+
+        private void InitializeGame()
+        {
+            this.BackColor = Color.Black;
+            this.KeyDown += Game_KeyDown;
         }
 
         private void InitializeStarship()
@@ -27,6 +34,19 @@ namespace SpaceInvadersWinForms
             starship.Top = 200;
             this.Controls.Add(starship);
         }
+
+        private void Game_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Left)
+            {
+                starship.Left -= 5;
+            }
+            else if(e.KeyCode == Keys.Right)
+            {
+                starship.Left += 5;
+            }
+        }
+
     }
 
     public class Starship : PictureBox
