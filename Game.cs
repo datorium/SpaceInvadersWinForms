@@ -87,7 +87,7 @@ namespace SpaceInvadersWinForms
 
         private void TimerMove_Tick(object sender, EventArgs e)
         {
-            this.Top -= 1;
+            this.Top -= 3;
         }
     }
 }
