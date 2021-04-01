@@ -31,7 +31,7 @@ namespace SpaceInvadersWinForms
         {
             starship = new Starship();
             starship.Left = 200;
-            starship.Top = 200;
+            starship.Top = ClientRectangle.Height - starship.Height;
             this.Controls.Add(starship);
         }
 
