@@ -40,11 +40,11 @@ namespace SpaceInvadersWinForms
         {
             if(e.KeyCode == Keys.Left)
             {
-                starship.Left -= 5;
+                starship.horVelocity = -1;
             }
             else if(e.KeyCode == Keys.Right)
             {
-                starship.Left += 5;
+                starship.horVelocity = 1;
             }
             else if(e.KeyCode == Keys.Space)
             {
@@ -60,7 +60,7 @@ namespace SpaceInvadersWinForms
     {
         private Timer timerMove = null;
         private int step = 5;
-        private int horVelocity = 1;
+        public int horVelocity = 1;
 
         private Game game = null;
         
@@ -125,4 +125,8 @@ namespace SpaceInvadersWinForms
             this.Top -= 3;
         }
     }
+
+
+
+
 }
