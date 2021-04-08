@@ -30,7 +30,7 @@ namespace SpaceInvadersWinForms
 
         private void InitializeStarship()
         {
-            starship = new Starship();
+            starship = new Starship(this);
             starship.Left = 200;
             starship.Top = ClientRectangle.Height - starship.Height;
             this.Controls.Add(starship);
@@ -58,11 +58,46 @@ namespace SpaceInvadersWinForms
 
     public class Starship : PictureBox
     {
-        public Starship()
+        private Timer timerMove = null;
+        private int step = 5;
+        private int horVelocity = 1;
+
+        private Game game = null;
+        
+        public Starship(Game gameObject)
         {
+            game = gameObject;
+
             this.BackColor = Color.SteelBlue;
             this.Width = 40;
             this.Height = 120;
+            InitializeTimerMove();
+        }
+
+        private void InitializeTimerMove()
+        {
+            timerMove = new Timer();
+            timerMove.Interval = 20;
+            timerMove.Tick += TimerMove_Tick;
+            timerMove.Start();
+        }
+
+        private void TimerMove_Tick(object sender, EventArgs e)
+        {
+            this.Left += step * horVelocity;
+            StarshipBorderCollision();
+        }
+
+        private void StarshipBorderCollision()
+        {
+            if(this.Left + this.Width >= game.ClientRectangle.Width)
+            {
+                horVelocity = -1;
+            }
+            else if (this.Left <= 0)
+            {
+                horVelocity = 1;
+            }
         }
     }
 
