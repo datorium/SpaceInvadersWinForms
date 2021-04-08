@@ -12,14 +12,49 @@ namespace SpaceInvadersWinForms
 {
     public partial class Game : Form
     {
+        private Random rand = new Random();
+        
         private Starship starship = null;
         private Bullet bullet = null;
+        private List<Enemy> enemies = new List<Enemy>();
+        private List<Bullet> bullets = new List<Bullet>();
+        private Timer gameTimer = null;
 
         public Game()
         {
             InitializeComponent();
             InitializeGame();
             InitializeStarship();
+            InitializeEnemies();
+            InitializeGameTimer();
+        }
+
+        private void InitializeGameTimer()
+        {
+            gameTimer = new Timer();
+            gameTimer.Tick += GameTimer_Tick;
+            gameTimer.Interval = 20;
+            gameTimer.Start();
+        }
+
+        private void GameTimer_Tick(object sender, EventArgs e)
+        {
+            BulletEnemyCollision();
+        }
+
+        private void BulletEnemyCollision()
+        {
+            foreach (var e in enemies)
+            {
+                foreach(var b in bullets)
+                {
+                    if (e.Bounds.IntersectsWith(b.Bounds))
+                    {
+                        e.Dispose();
+                        b.Dispose();
+                    }
+                }
+            }
         }
 
         private void InitializeGame()
@@ -36,6 +71,20 @@ namespace SpaceInvadersWinForms
             this.Controls.Add(starship);
         }
 
+        private void InitializeEnemies()
+        {
+            Enemy enemy = null;
+            for(int i = 0; i < 5; i++)
+            {
+                enemy = new Enemy();
+                enemy.Top = rand.Next(0, 100);
+                enemy.Left = rand.Next(0, ClientRectangle.Width - enemy.Width);
+                enemies.Add(enemy);
+                this.Controls.Add(enemy);
+            }
+        }
+
+
         private void Game_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Left)
@@ -51,6 +100,7 @@ namespace SpaceInvadersWinForms
                 bullet = new Bullet();
                 bullet.Left = starship.Left + 19;
                 bullet.Top = starship.Top - bullet.Height;
+                bullets.Add(bullet);
                 this.Controls.Add(bullet);
             }
         }
@@ -126,7 +176,15 @@ namespace SpaceInvadersWinForms
         }
     }
 
-
+    public class Enemy : PictureBox
+    {
+        public Enemy()
+        {
+            this.Width = 20;
+            this.Height = 20;
+            this.BackColor = Color.Yellow;
+        }
+    }
 
 
 }
